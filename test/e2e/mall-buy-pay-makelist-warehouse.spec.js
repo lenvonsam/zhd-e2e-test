@@ -13,7 +13,7 @@ describe('xingyun Login', function() { //login指的是该用例的描述
   beforeEach(function() {
     // , fullscreen: true
     page = Nightmare({
-      show: true
+      show: false
     }).viewport(1024, 768) //设置是否展示屏幕，和屏幕大小
     page.goto('http://webtest.xingyun361.com') //进入型云网站
   })
@@ -201,7 +201,7 @@ describe('xingyun Login', function() { //login指的是该用例的描述
     listNo = await page
       .evaluate(() => document.querySelector('#tbContent_sell tr td:nth-child(1)').innerHTML) //根据订单号查询提单号
     console.log('listNo:>>' + listNo)
-    await page.wait(500).end()
+    await page.wait(1000).end()
   })
 
   /*****************************************登陆仓储出库**********************************************************/
