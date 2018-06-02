@@ -1,0 +1,46 @@
+{
+  "name": "zhd-e2e-test",
+  "description": "zhd e2e test",
+  "version": "0.1.1",
+  "author": "sam@thinkingsam.cn",
+  "scripts": {
+    "test": "jest --config test/jest.conf.js --coverage",
+    "docker": "git pull origin master && npm run test && cd test/jestReport && http-server -p 6888"
+  },
+  "dependencies": {
+    "http-server": "^0.11.1",
+    "jest": "^23.1.0",
+    "jest-serializer-vue": "^2.0.0",
+    "jest-vue-report": "^0.1.5",
+    "nightmare": "^3.0.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-jest": "^23.0.1",
+    "babel-plugin-dynamic-import-node": "^1.2.0",
+    "babel-plugin-syntax-jsx": "^6.18.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-plugin-transform-vue-jsx": "^3.7.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-2": "^6.24.1",
+    "vue-jest": "^2.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lenvonsam/jest-vue-report.git"
+  },
+  "keywords": [
+    "jest",
+    "jest-report",
+    "jest-vue-report",
+    "nightmare",
+    "jest-test",
+    "e2e-test"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lenvonsam/jest-vue-report/issues"
+  },
+  "homepage": "https://github.com/lenvonsam/jest-vue-report#readme"
+}
