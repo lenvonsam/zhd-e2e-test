@@ -13,7 +13,7 @@ npm run docker
 
 ```
 
-## After the test process is complete, you can open your browser and type http://localhost:3688 to see the test report.
+> After the test process is complete, you can open your browser and type http://localhost:3688 to see the test report.
 
 ## Have Fun!
 
