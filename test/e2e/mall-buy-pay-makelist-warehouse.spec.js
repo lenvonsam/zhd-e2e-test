@@ -3,8 +3,7 @@ import {
   getScreenshotUrl
 } from 'jest-vue-report' //引用方法
 
-jest.setTimeout(50000) //设置每个test方法的超时时间
-
+jest.setTimeout(50000)
 describe('xingyun Login', function() { //login指的是该用例的描述
   let page = null
   let orderNo = ''
@@ -65,7 +64,8 @@ describe('xingyun Login', function() { //login指的是该用例的描述
       .wait(500)
 
     await page
-      .wait(1000)
+      .wait(2000)
+      .wait('.m_inner label input')
       .click('.m_inner label:nth-child(2) input') //选择磅计
       .evaluate(function() {
         document.querySelector('.tr_num input').value = '' //清空数字
