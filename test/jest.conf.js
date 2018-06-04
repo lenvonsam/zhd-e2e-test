@@ -20,7 +20,7 @@ module.exports = {
   // testEnvironment: 'node',
   coverageDirectory: '<rootDir>/test/report',
   testResultsProcessor: 'jest-vue-report',
-  // setupTestFrameworkScriptFile: '<rootDir>/test/jest.setup.js',
+  setupTestFrameworkScriptFile: '<rootDir>/test/jest.setup.js',
   collectCoverageFrom: [
     'src/**/*.{js,vue}',
     '!src/main.js',
