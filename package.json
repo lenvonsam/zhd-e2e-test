@@ -4,8 +4,8 @@
   "version": "0.1.1",
   "author": "sam@thinkingsam.cn",
   "scripts": {
-    "test": "jest --config test/jest.conf.js --coverage --detectOpenHandles --runInBand",
-    "docker": "ping webtest.xingyun361.com -c 4 && git pull origin master && npm run test && cd test/jestReport && http-server -p 3688"
+    "test": "jest --config test/jest.conf.js --coverage",
+    "docker": "jobs -l && ping webtest.xingyun361.com -c 4 && git pull origin master && npm run test && cd test/jestReport && http-server -p 3688"
   },
   "dependencies": {
     "http-server": "^0.11.1",
