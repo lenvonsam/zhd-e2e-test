@@ -5,7 +5,8 @@
   "author": "sam@thinkingsam.cn",
   "scripts": {
     "test": "jest --config test/jest.conf.js --coverage --detectOpenHandles",
-    "docker": "Xvfb -ac -screen scrn 1280x2000x24 :9.0 & export DISPLAY=:9.0 && jobs -l && ping webtest.xingyun361.com -c 4 && git pull origin master && npm run test && cd test/jestReport && http-server -p 3688"
+    "docker": "Xvfb -ac -screen scrn 1280x2000x24 :9.0 & export DISPLAY=:9.0 && jobs -l && ping webtest.xingyun361.com -c 4 && git pull origin master && npm run test && cd test/jestReport && http-server -p 3688",
+    "site": "npm run test && cd test/jestReport && http-server -p 3688"
   },
   "dependencies": {
     "http-server": "^0.11.1",
