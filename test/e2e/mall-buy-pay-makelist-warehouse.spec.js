@@ -12,9 +12,9 @@ describe('xingyun Login', function() { //login指的是该用例的描述
   let warehouse = ''
   beforeEach(function() {
     page = Nightmare({
-      show: true,
-      fullscreen: true
-    }) //设置是否展示屏幕，和屏幕大小
+      show: true
+      // fullscreen: true
+    }).viewport(1920, 1080) //设置是否展示屏幕，和屏幕大小
     page.goto('http://webtest.xingyun361.com') //进入型云网站
   })
 
@@ -225,11 +225,7 @@ describe('xingyun Login', function() { //login指的是该用例的描述
   // /***************************************************************登陆仓储出库（3）**********************************************************/
   test('out of warehouse ', async function() {
     await page //仓储登陆
-    page = Nightmare({
-      show: true,
-      fullscreen: true
-    })
-    page.goto('http://192.168.80.147:8080/app/login.do') //登陆仓储
+    .goto('http://192.168.80.147:8080/app/login.do') //登陆仓储
       .wait('#btnlogin')
       .insert('.loginList:nth-child(1) input', 'gdsdp')
       .insert('.loginList:nth-child(2) input', 'sdp123')
