@@ -11,8 +11,7 @@ describe('xingyun Login', function() { //login指的是该用例的描述
   let warehouse = ''
   beforeEach(function() {
     page = Nightmare({
-      show: false
-      , fullscreen: true
+      show: true
     })
     // .viewport(1024, 768) //设置是否展示屏幕，和屏幕大小
     page.goto('http://webtest.xingyun361.com') //进入型云网站
