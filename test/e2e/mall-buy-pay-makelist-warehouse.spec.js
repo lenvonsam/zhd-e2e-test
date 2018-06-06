@@ -12,9 +12,9 @@ describe('xingyun Login', function() { //login指的是该用例的描述
   let warehouse = ''
   beforeEach(function() {
     page = Nightmare({
-      show: true
-      // fullscreen: true
-    }).viewport(1920, 1080) //设置是否展示屏幕，和屏幕大小
+      show: true,
+      fullscreen: true
+    }) //设置是否展示屏幕，和屏幕大小
     page.goto('http://webtest.xingyun361.com') //进入型云网站
   })
 
@@ -74,11 +74,11 @@ describe('xingyun Login', function() { //login指的是该用例的描述
 
     await page //购物车
       .wait(1000)
-      .click('.m_inner label:nth-child(1) input') //选择磅计
+      .click('.m_inner label:nth-child(2) input') //选择磅计
       .evaluate(function() {
         document.querySelector('.tr_num input').value = '' //清空数字
       })
-      .insert('.tr_num input', '20') //输入数量
+      .insert('.tr_num input', '40') //输入数量
       .wait(1000)
       .click('.tr_do a:nth-child(2)') //点击生成订单
       .wait(500)
@@ -120,7 +120,7 @@ describe('xingyun Login', function() { //login指的是该用例的描述
     await page //订单支付
       .insert('#ipt_vcode_3', msg) //输入验证码
       .click('#btn_3_ok') //点击确认
-      .wait(500)
+      .wait(2000)
       .click('#ks-stdmod-footer-ks-component475 button:nth-child(1)') //点击确定
       .wait('#ks-stdmod-footer-ks-component607 button')
       .click('#ks-stdmod-footer-ks-component607 button').end() //点击确定
@@ -193,9 +193,9 @@ describe('xingyun Login', function() { //login指的是该用例的描述
       .insert('#certificate_code', '340621197309108496')
       .insert('#vehicle_no_input', '苏DEW255')
       .click('#tjButton') //点击确定
-      .wait(1000)
+      .wait(500)
       .click('.ks-dialog-footer.ks-overlay-footer div:nth-child(1) button') //点击确定
-      .wait(1000)
+      .wait(500)
       .click('.ks-dialog-footer.ks-overlay-footer div:nth-child(1) button') //点击确定
       .wait(1500)
 
@@ -222,9 +222,14 @@ describe('xingyun Login', function() { //login指的是该用例的描述
 
   })
 
-  /***************************************************************登陆仓储出库（3）**********************************************************/
+  // /***************************************************************登陆仓储出库（3）**********************************************************/
   test('out of warehouse ', async function() {
-    await page.goto('http://192.168.80.147:8080/app/login.do') //登陆仓储
+    await page //仓储登陆
+    page = Nightmare({
+      show: true,
+      fullscreen: true
+    })
+    page.goto('http://192.168.80.147:8080/app/login.do') //登陆仓储
       .wait('#btnlogin')
       .insert('.loginList:nth-child(1) input', 'gdsdp')
       .insert('.loginList:nth-child(2) input', 'sdp123')
@@ -309,14 +314,23 @@ describe('xingyun Login', function() { //login指的是该用例的描述
       .click('#ldp_source_storage_warehouseout_ownerout_controller_OwneroutCtrl_queryForm-innerCt a') //点击查询
       .wait(500)
     let examine = await page
-      .evaluate(() => document.querySelector('.x-grid-view.x-fit-item.x-grid-view-default table tbody:nth-last-child(1) td:nth-child(2) div').innerHTML)
+      .evaluate(() => document.querySelector('.x-grid-view.x-fit-item.x-grid-view-default table tbody:nth-last-child(1) td:nth-child(2) div').innerHTML) //获取审核状况
+
     console.log('examine:>>' + examine)
-    if (examine === '已审') {
+    if (examine == '已审') { //判断出库结果是否需要审核
       await page.end()
-      expect(examine).toBe('已审') //判断出库结果是否需要审核
     } else {
-      await page.end()
-      expect(false).toBe(true)
+      await page
+        .click('.x-gridview-1219-table.x-grid-table.x-grid-with-row-lines.x-grid-table-selected-first.x-grid-table-focused-first') //选择被审核记录
+        .wait(500)
+        .click('.x-panel.x-grid-with-row-lines.x-grid-locked.x-border-item.x-box-item.x-panel-default.x-grid div:nth-child(1) div:nth-child(1)  div a:nth-last-child(5)') //点击审核
+        .click('.x-window.x-layer.x-window-default.x-closable.x-window-closable.x-window-default-closable.x-border-box.x-resizable.x-window-resizable.x-window-default-resizable div a:nth-child(5)')
+        .wait(500)
+        .click('.x-toolbar.x-docked.x-toolbar-footer.x-docked-bottom.x-toolbar-docked-bottom.x-toolbar-footer-docked-bottom.x-box-layout-ct div a span')
+        .wait(500)
+        .click('.x-window.x-message-box.x-layer.x-window-default.x-closable.x-window-closable.x-window-default-closable.x-border-box div:nth-child(3) a').end()
     }
+    expect(examine).toBe('已审')
+
   })
 })
