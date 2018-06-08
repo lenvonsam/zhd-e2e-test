@@ -12,9 +12,10 @@ describe('xingyun Login', function() { //login指的是该用例的描述
   let warehouse = ''
   beforeEach(function() {
     page = Nightmare({
-      show: true
-      // fullscreen: true
-    }).viewport(1920, 1080) //设置是否展示屏幕，和屏幕大小
+      show: true,
+      fullscreen: true  //设置是否展示屏幕，和屏幕大小
+    })
+    //.viewport(1920, 1080) 
     page.goto('http://webtest.xingyun361.com') //进入型云网站
   })
 
@@ -58,7 +59,7 @@ describe('xingyun Login', function() { //login指的是该用例的描述
     await page //商城首页
       .wait(1000)
       .wait('#ipt_goods_name')
-      .insert('#ipt_goods_name', '圆钢（机械类）') //输入物资名称
+      .insert('#ipt_goods_name', '热轧扁钢') //输入物资名称
       // .insert('#ipt_att4', '8#')  //输入规格
       // .insert('ipt_att7', '唐山')  //输入产地
       // .insert('ipt_wh_name', '6号门')  //输入仓库
@@ -67,6 +68,7 @@ describe('xingyun Login', function() { //login指的是该用例的描述
       .wait(500)
       //.click('.my_tbody tr:nth-child(2) td:nth-last-child(1) a')     //点击第一行的购买
       .click('#tbContent_div tbody:nth-child(2) td:nth-last-child(1) a')
+      .wait(1000)
       .click('#area_float_side_mycart a') //点击侧边栏购物车
       .wait(500)
       .click('.js_btn') //点击去购物车结算
@@ -78,20 +80,26 @@ describe('xingyun Login', function() { //login指的是该用例的描述
       .evaluate(function() {
         document.querySelector('.tr_num input').value = '' //清空数字
       })
-      .insert('.tr_num input', '40') //输入数量
+      .insert('.tr_num input', '50') //输入数量
       .wait(1000)
       .click('.tr_do a:nth-child(2)') //点击生成订单
       .wait(500)
       .click('.ks-dialog-footer.ks-overlay-footer button ') //点击确定
       .wait(1000)
+
       .click('.suc_bottom.text-center a:nth-child(2)')
       .wait(500) //点击去付款
 
+      .refresh()
+
 
     await page //用户中心
+      .refresh()
       .wait(1500)
+      .wait('#content_1 tr td:nth-last-child(1) a')
       .click('#content_1 tr td:nth-last-child(1) a') //点击付款
       .wait(1000)
+
 
     await page //订单支付
       .wait(1000)
@@ -161,7 +169,8 @@ describe('xingyun Login', function() { //login指的是该用例的描述
     console.log(cookies)
 
     await page //用户中心
-      .click('.top_icon16') //点击提单管理
+      .wait(500)
+      .click('.icon-zhcc_tidan') //点击提单管理
       .wait('.my_left_block1 li:nth-child(5) ul li:nth-last-child(1)')
       .click('.my_left_block1 li:nth-child(5) ul li:nth-child(1) a') //点击制作提单
 
@@ -205,7 +214,7 @@ describe('xingyun Login', function() { //login指的是该用例的描述
     console.log('makefinish:>>' + makefinish)
 
     await page //提单管理界面
-      .click('.top_icon16') //点击提单管理
+      .click('.icon-zhcc_tidan') //点击提单管理
       .click('.my_left_block1 li:nth-child(5) ul li:nth-child(2) a') //点击提单管理
       .wait(1000)
       .insert('#dealNo', orderNo) //输入订单号
@@ -281,7 +290,7 @@ describe('xingyun Login', function() { //login指的是该用例的描述
       if (index > -1)
         wareCode = warehouseCode[index].warehouseCode
     }
-    console.log('====wareCode:>>.' + wareCode)
+    console.log('wareCode:>>.' + wareCode)
 
     await page //出库界面
       .wait(1000)
@@ -300,33 +309,43 @@ describe('xingyun Login', function() { //login指的是该用例的描述
 
     await page
       .click('#ldp_source_storage_warehouseout_ownerout_controller_OwneroutCtrl_showEditWin_save-btnInnerEl') //点击保存
-      .wait(1000)
+      .wait(2000)
       .click('.x-toolbar.x-docked.x-toolbar-footer.x-docked-bottom.x-toolbar-docked-bottom.x-toolbar-footer-docked-bottom.x-box-layout-ct span') //点击确定
       .wait(1000)
 
     await page //出库实提界面
-      .insert('#ldp_source_storage_warehouseout_ownerout_controller_OwneroutCtrl_queryForm-innerCt div:nth-child(4) td:nth-child(2)', listNo) //输入提单号
+      .insert('#ldp_source_storage_warehouseout_ownerout_controller_OwneroutCtrl_queryForm-innerCt div:nth-child(4) td:nth-child(2) input', listNo) //输入提单号
       .wait(500)
       .click('#ldp_source_storage_warehouseout_ownerout_controller_OwneroutCtrl_queryForm-innerCt a') //点击查询
       .wait(500)
     let examine = await page
       .evaluate(() => document.querySelector('.x-grid-view.x-fit-item.x-grid-view-default table tbody:nth-last-child(1) td:nth-child(2) div').innerHTML) //获取审核状况
-
     console.log('examine:>>' + examine)
     if (examine == '已审') { //判断出库结果是否需要审核
       await page.end()
+     console.log('examine:>>' + examine)
     } else {
       await page
-        .click('.x-gridview-1219-table.x-grid-table.x-grid-with-row-lines.x-grid-table-selected-first.x-grid-table-focused-first') //选择被审核记录
-        .wait(500)
+        .click('#ldp_source_storage_warehouseout_ownerout_controller_OwneroutCtrl_viewGrid-normal-body div tr:nth-child(1)') //选择被审核记录
+        .wait(1000)
         .click('.x-panel.x-grid-with-row-lines.x-grid-locked.x-border-item.x-box-item.x-panel-default.x-grid div:nth-child(1) div:nth-child(1)  div a:nth-last-child(5)') //点击审核
-        .click('.x-window.x-layer.x-window-default.x-closable.x-window-closable.x-window-default-closable.x-border-box.x-resizable.x-window-resizable.x-window-default-resizable div a:nth-child(5)')
+        .wait(1000)
+        .click('.x-window.x-layer.x-window-default.x-closable.x-window-closable.x-window-default-closable.x-border-box.x-resizable.x-window-resizable.x-window-default-resizable div a:nth-child(5)') //点击审核
+        .wait(3000)
+        .click('#base_source_billtypeaudit_view_AuditWinView_show .x-btn.x-unselectable.x-box-item.x-toolbar-item.x-btn-default-small.x-noicon.x-btn-noicon.x-btn-default-small-noicon:nth-child(1)')  //点击审核
+        .wait(1000)
+        .click('.x-window.x-message-box.x-layer.x-window-default.x-closable.x-window-closable.x-window-default-closable.x-border-box div:nth-child(3) a')
+        
+        .wait(1000)
+        .click('#ldp_source_storage_warehouseout_ownerout_controller_OwneroutCtrl_queryForm-innerCt a') //点击查询
+
+        let examine2 = await page
+        .evaluate(() => document.querySelector('.x-grid-view.x-fit-item.x-grid-view-default table tbody:nth-last-child(1) td:nth-child(2) div').innerHTML) 
+        console.log('examine2:>>' + examine2)
+        expect(examine2).toBe('已审')
         .wait(500)
-        .click('.x-toolbar.x-docked.x-toolbar-footer.x-docked-bottom.x-toolbar-docked-bottom.x-toolbar-footer-docked-bottom.x-box-layout-ct div a span')
-        .wait(500)
-        .click('.x-window.x-message-box.x-layer.x-window-default.x-closable.x-window-closable.x-window-default-closable.x-border-box div:nth-child(3) a').end()
+        .end()
     }
-    expect(examine).toBe('已审')
 
   })
 })
