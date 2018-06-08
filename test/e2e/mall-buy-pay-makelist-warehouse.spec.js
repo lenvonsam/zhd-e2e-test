@@ -13,9 +13,9 @@ describe('xingyun Login', function() { //login指的是该用例的描述
   beforeEach(function() {
     page = Nightmare({
       show: true,
-      fullscreen: true //设置是否展示屏幕，和屏幕大小
+      // fullscreen: true //设置是否展示屏幕，和屏幕大小
     })
-    //.viewport(1920, 1080)
+    .viewport(1920, 1080)
     page.goto('http://webtest.xingyun361.com') //进入型云网站
   })
 
@@ -337,6 +337,7 @@ describe('xingyun Login', function() { //login指的是该用例的描述
         console.log('examine:>>' + examine)
       } else {
         await page
+          .wait(1000)
           .click('#ldp_source_storage_warehouseout_ownerout_controller_OwneroutCtrl_viewGrid-normal-body div tr:nth-child(1)') //选择被审核记录
           .wait(1000)
           .click('.x-panel.x-grid-with-row-lines.x-grid-locked.x-border-item.x-box-item.x-panel-default.x-grid div:nth-child(1) div:nth-child(1)  div a:nth-last-child(5)') //点击审核
@@ -352,7 +353,9 @@ describe('xingyun Login', function() { //login指的是该用例的描述
           .wait(2000)
 
         let examine2 = await page
-          .evaluate(() => document.querySelector('.x-grid-view.x-fit-item.x-grid-view-default table tbody:nth-last-child(1) td:nth-child(2) div').innerHTML)
+          .wait('.x-grid-view.x-fit-item.x-grid-view-default table tbody')
+          .wait(1000)
+          .evaluate(() => document.querySelector('.x-grid-view.x-fit-item.x-grid-view-default table tbody td:nth-child(2) div').innerHTML)
         console.log('examine2:>>' + examine2)
         expect(examine2).toBe('已审')
 
@@ -363,6 +366,5 @@ describe('xingyun Login', function() { //login指的是该用例的描述
       //   await page.end()
       // }
     }
-
   })
 })
